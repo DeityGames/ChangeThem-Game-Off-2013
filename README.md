@@ -14,7 +14,7 @@ Left click to infect civilians and sacrifice zombies.
 
 ### Title Screen
 
-![alt text](http://http://deitygames.github.io/ChangeThem/images/Start.jpg "Title Screen")
+![alt text](http://deitygames.github.io/ChangeThem/images/Start.jpg "Title Screen")
 
 ### Starting Infection
 
