@@ -40,7 +40,7 @@ Sacrificing a certain number of zombies allows for the ability to infect any civ
 Civilians huddle around each other and soldiers and will flee any zombie they see. The can become infected by contact with a zombie or directly infected by use of an infection.
 
 ### Soldiers
-Soldiers have the capability to destory zombies they see. They will shoot on site and often chase down groups of zombies. The can only be infected through direct contact with a zombie. They are not to be underestimated.
+Soldiers are colored olive green. They have the capability to destroy any zombies they see, though they will not fire through civilians. They will shoot on site and often chase down groups of zombies. The can only be infected through direct contact with a zombie. They are not to be underestimated.
 
 ## Credits
 
