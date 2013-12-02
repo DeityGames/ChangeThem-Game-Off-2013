@@ -44,7 +44,7 @@ Soldiers are colored olive green. They have the capability to destroy any zombie
 
 ## Credits
 
-### Developper / designer / author of Change THEM
+### Developer / designer / author of Change THEM
 
 [Hylinn Taggart](http://www.linkedin.com/in/htaggart)
 
