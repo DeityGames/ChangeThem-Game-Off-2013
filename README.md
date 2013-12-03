@@ -31,7 +31,7 @@ Left click to infect civilians and sacrifice zombies.
 ## Features
 
 ### Infecting
-Each level has a certain number of infections to start with. To infect a civilian in the setup phase, just click on it. The infection can be removed by click on it again. Soldiers can not be directly infected.
+Each level has a certain number of infections to start with. These infections can only be used before hitting start. Use them wisely. To infect a civilian in the setup phase, just click on it. The infection can be removed by click on it again. Soldiers can not be directly infected. You can gain more infections during play by sacrificing a certain number of zombies.
 
 ### Sacrificing
 Sacrificing a certain number of zombies allows for the ability to infect any civilian after the setup phase. To sacrifice a zombie, just click on it. Once an infection is ready, just click on the desired target. Soldiers cannot be infected in this way.
