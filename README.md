@@ -37,7 +37,7 @@ Each level has a certain number of infections to start with. These infections ca
 Sacrificing a certain number of zombies allows for the ability to infect any civilian after the setup phase. To sacrifice a zombie, just click on it. Once an infection is ready, just click on the desired target. Soldiers cannot be infected in this way.
 
 ### Civilians
-Civilians huddle around each other and soldiers and will flee any zombie they see. The can become infected by contact with a zombie or directly infected by use of an infection.
+Civilians huddle around soldiers and each other and will flee any zombie they see. The can become infected by contact with a zombie or directly infected by use of an infection.
 
 ### Soldiers
 Soldiers are colored olive green. They have the capability to destroy any zombies they see, though they will not fire through civilians. They will shoot on sight and often chase down groups of zombies. The can only be infected through direct contact with a zombie. They are not to be underestimated.
