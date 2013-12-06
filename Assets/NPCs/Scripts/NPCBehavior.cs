@@ -1,20 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 abstract public class NPCBehavior : MonoBehaviour {
-
-	protected ArrayList nearZombies;
-	protected ArrayList nearCivilians;
-	protected ArrayList nearSoldiers;
+	
+	protected List<GameObject> nearZombies;
+	protected List<GameObject> nearCivilians;
+	protected List<GameObject> nearSoldiers;
 	
 	protected AIPath pathfinder;
 	protected Transform groundTarget; 
 	
 	// Use this for initialization
 	protected void Start() {
-		nearZombies = new ArrayList();
-		nearCivilians = new ArrayList();
-		nearSoldiers = new ArrayList();
+		nearZombies = new List<GameObject>();
+		nearCivilians = new List<GameObject>();
+		nearSoldiers = new List<GameObject>();
 		
 		GameObject targets = GameObject.Find("Ground Targets");
 		groundTarget = new GameObject("Ground Target").transform;
@@ -43,7 +44,7 @@ abstract public class NPCBehavior : MonoBehaviour {
 		}
 	}
 	
-	protected GameObject findNearestObject(ArrayList gameObjects) {
+	protected GameObject findNearestObject(List<GameObject> gameObjects) {
 		GameObject nearestObject = null;
 		float nearestDistance = Mathf.Infinity;
 		
@@ -60,7 +61,7 @@ abstract public class NPCBehavior : MonoBehaviour {
 		return nearestObject;
 	}
 	
-	protected GameObject findFarthestObject(ArrayList gameObjects) {
+	protected GameObject findFarthestObject(List<GameObject> gameObjects) {
 		GameObject farthestObject = null;
 		float farthestDistance = 0.0f;
 		
@@ -75,7 +76,7 @@ abstract public class NPCBehavior : MonoBehaviour {
 		return farthestObject;
 	}
 	
-	protected Vector3 calculateCentroid(ArrayList gameObjects) {
+	protected Vector3 calculateCentroid(List<GameObject> gameObjects) {
 		Vector3 centroid = new Vector3();
 		int count = 0;
 		
@@ -172,11 +173,8 @@ abstract public class NPCBehavior : MonoBehaviour {
 	}
 	
 	public void cleanLists() {
-		foreach (GameObject zombie in nearZombies)
-			if (zombie == null) nearZombies.Remove(zombie);
-		foreach (GameObject civilian in nearCivilians)
-			if (civilian == null) nearCivilians.Remove(civilian);
-		foreach (GameObject soldier in nearSoldiers)
-			if (soldier == null) nearSoldiers.Remove(soldier);
+		nearZombies.RemoveAll(x => x == null);
+		nearCivilians.RemoveAll(x => x == null);
+		nearSoldiers.RemoveAll(x => x == null);
 	}
 }
