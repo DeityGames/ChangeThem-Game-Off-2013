@@ -27,7 +27,7 @@ public class SoldierBehavior : NPCBehavior {
 	}
 	
 	void FixedUpdate() {
-		rigidbody.velocity = new Vector3(0, 0, 0);
+		GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
 		updateMovementState();
 		
 		switch (movementState) {

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class GUIStats : MonoBehaviour {
 	
@@ -8,10 +9,10 @@ public class GUIStats : MonoBehaviour {
 	void OnGUI () {
 		if (Time.timeScale != 0) {
 			if (GUI.Button(new Rect(10, 68, 55, 20), "Restart")) {
-				Application.LoadLevel(Application.loadedLevel);
+				SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 			}
 			else if (GUI.Button(new Rect(70, 68, 85, 20), "Select Level")) {
-				Application.LoadLevel(0);	
+				SceneManager.LoadScene(0);
 			}
 			
 			GUI.Label(new Rect(10, 0, 500, 20), "Elapsed Time (seconds): " + Time.timeSinceLevelLoad);

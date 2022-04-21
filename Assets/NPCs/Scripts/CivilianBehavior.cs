@@ -15,7 +15,7 @@ public class CivilianBehavior : NPCBehavior {
 		base.Start();
 		
 		movementState = MovementStates.Wandering;
-		renderer.material = materials[Random.Range(0, materials.Length)];
+		GetComponent<Renderer>().material = materials[Random.Range(0, materials.Length)];
 	}
 	
 	// Update is called once per frame
@@ -24,7 +24,7 @@ public class CivilianBehavior : NPCBehavior {
 	}
 	
 	void FixedUpdate() {
-		rigidbody.velocity = new Vector3(0, 0, 0);
+		GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
 		updateMovementState();
 		
 		switch (movementState) {
