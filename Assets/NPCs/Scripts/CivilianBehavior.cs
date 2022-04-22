@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 using System.Collections;
 
 public class CivilianBehavior : NPCBehavior {
@@ -15,7 +16,8 @@ public class CivilianBehavior : NPCBehavior {
 		base.Start();
 		
 		movementState = MovementStates.Wandering;
-		renderer.material = materials[Random.Range(0, materials.Length)];
+		GetComponent<Renderer>().material = materials[Random.Range(0, materials.Length)];
+		agent = GetComponent<NavMeshAgent>();
 	}
 	
 	// Update is called once per frame
@@ -24,7 +26,7 @@ public class CivilianBehavior : NPCBehavior {
 	}
 	
 	void FixedUpdate() {
-		rigidbody.velocity = new Vector3(0, 0, 0);
+		GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
 		updateMovementState();
 		
 		switch (movementState) {
@@ -70,8 +72,7 @@ public class CivilianBehavior : NPCBehavior {
 			cleanLists();
 		else {
 			Vector3 distanceVector = transform.position - nearestZombie.transform.position;
-			groundTarget.position = transform.position + distanceVector;
-			pathfinder.target = groundTarget;	
+			updateDestination(transform.position + distanceVector);	
 		}
 	}
 	
@@ -79,33 +80,22 @@ public class CivilianBehavior : NPCBehavior {
 		Vector3 centroid = calculateCentroid(nearCivilians);
 		float distance = Vector3.Distance(centroid, transform.position);
 		if (distance > 0.0f) {
-			groundTarget.position = centroid;
-			pathfinder.target = groundTarget;
+			updateDestination(centroid);
 		}
 	}
 	
 	private void hideNearSoldiers() {
-		pathfinder.target = findFarthestObject(nearSoldiers).transform;
+		updateDestination(findFarthestObject(nearSoldiers).transform.position);
 	}
 	
 	private void avoidCivilians() {
 		Vector3 centroid = calculateCentroid(nearCivilians);
 		Vector3 distanceVector = transform.position - centroid;
-		
-		groundTarget.position = transform.position + distanceVector;
-		pathfinder.target = groundTarget;
-	}
-	
-	private void wanderAround() {
-		if(pathfinder.target == null || Vector3.Distance(transform.position, pathfinder.target.position) < 5.0f) {
-			groundTarget.position = generateRandomPosition(-45, 45, -45, 45);
-			pathfinder.target = groundTarget;
-		}
+
+		updateDestination(transform.position + distanceVector);
 	}
 	
 	override public void handleDestroy(GameObject destroyedObject) {
 		removeNearObject(destroyedObject);
-		if (pathfinder.target == destroyedObject.transform)
-			pathfinder.target = groundTarget;
 	}
 }

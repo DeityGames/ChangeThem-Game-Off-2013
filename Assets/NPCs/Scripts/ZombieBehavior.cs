@@ -18,7 +18,7 @@ public class ZombieBehavior : NPCBehavior {
 	}
 	
 	void FixedUpdate() {
-		rigidbody.velocity = new Vector3(0, 0, 0);
+		GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
 		updateMovementState();
 		
 		switch (movementState) {
@@ -45,24 +45,20 @@ public class ZombieBehavior : NPCBehavior {
 	private void chase() {
 		GameObject nearestSoldier = findNearestObject(nearSoldiers);
 		GameObject nearestCivilian = findNearestObject(nearCivilians);
-		
-		if (nearestSoldier != null && nearestCivilian == null) 
-			pathfinder.target = nearestSoldier.transform;
+
+		if (nearestSoldier != null && nearestCivilian == null)
+			updateDestination(nearestSoldier.transform.position);
 		else if (nearestCivilian != null && nearestSoldier == null)
-			pathfinder.target = nearestCivilian.transform;
+			updateDestination(nearestCivilian.transform.position);
 		else if (nearestCivilian == null && nearestCivilian == null)
-			pathfinder.target = groundTarget;
-		else if (Vector3.Distance(nearestSoldier.transform.position, transform.position) < soldierHate * Vector3.Distance(nearestCivilian.transform.position, transform.position))
-			pathfinder.target = nearestSoldier.transform;	
-		else
-			pathfinder.target = nearestCivilian.transform;
-	}
-	
-	private void wanderAround() {
-		if(pathfinder.target == null || Vector3.Distance(transform.position, pathfinder.target.position) < 5.0f) {
-			groundTarget.position = generateRandomPosition(-45, 45, -45, 45);
-			pathfinder.target = groundTarget;
+		{
+			cleanLists();
+			updateDestination(wanderTarget);
 		}
+		else if (Vector3.Distance(nearestSoldier.transform.position, transform.position) < soldierHate * Vector3.Distance(nearestCivilian.transform.position, transform.position))
+			updateDestination(nearestSoldier.transform.position);
+		else
+			updateDestination(nearestCivilian.transform.position);
 	}
 	
 	void OnCollisionEnter(Collision collision) {
@@ -71,8 +67,8 @@ public class ZombieBehavior : NPCBehavior {
 			Vector3 position = other.transform.position;
 			Quaternion rotation = other.transform.rotation;
 			
-			if (other.gameObject.transform == pathfinder.target)
-				pathfinder.target = groundTarget;
+			if (other.gameObject.transform.position == destination)
+				updateDestination(wanderTarget);
 			Destroy(other.gameObject);
 			Instantiate(zombiePrefab, position, rotation);
 		}
@@ -80,7 +76,5 @@ public class ZombieBehavior : NPCBehavior {
 	
 	override public void handleDestroy(GameObject destroyedObject) {
 		removeNearObject(destroyedObject);
-		if (pathfinder.target == destroyedObject.transform)
-			pathfinder.target = groundTarget;
 	}
 }

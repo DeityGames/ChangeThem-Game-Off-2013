@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class ZombiePlacement : MonoBehaviour {
 	
@@ -13,7 +14,7 @@ public class ZombiePlacement : MonoBehaviour {
 				Time.timeScale = 1.0f;
 			}
 			else if (GUI.Button(new Rect(65, 22, 85, 20), "Select Level")) {
-				Application.LoadLevel(0);	
+				SceneManager.LoadScene(0);	
 			}
 		}
 	}
