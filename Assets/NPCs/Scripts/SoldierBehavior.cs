@@ -53,12 +53,15 @@ public class SoldierBehavior : NPCBehavior {
 		if (nearZombies.Count > 0) {
 			GameObject nearestZombie = findNearestObject(nearZombies);
 			if (nearestZombie == null)
+			{
 				cleanLists();
-			else if (Vector3.Distance(nearestZombie.transform.position, transform.position) > bravery) 
+				movementState = MovementStates.Wandering;
+			}
+			else if (Vector3.Distance(nearestZombie.transform.position, transform.position) > bravery)
 				movementState = MovementStates.Following;
-			else 
+			else
 				movementState = MovementStates.Retreating;
-		}
+		} 
 		else
 			movementState = MovementStates.Wandering;
 	}
@@ -67,24 +70,19 @@ public class SoldierBehavior : NPCBehavior {
 		GameObject nearestZombie = findNearestObject(nearZombies);
 		Vector3 distanceVector = transform.position - nearestZombie.transform.position;
 		
-		groundTarget.position = transform.position + distanceVector;
-		pathfinder.target = groundTarget;	
+		updateDestination(transform.position + distanceVector);
 		target = nearestZombie;
 	}
 	
 	private void followZombie() {
 		target = findNearestObject(nearZombies);
-		
-		if (target != null) 
-			pathfinder.target = target.transform;
+
+		if (target != null)
+			updateDestination(target.transform.position);
 		else
-			pathfinder.target = groundTarget;
-	}
-	
-	private void wanderAround() {
-		if(pathfinder.target == null || Vector3.Distance(transform.position, pathfinder.target.position) < 5.0f) {
-			groundTarget.position = generateRandomPosition(-45, 45, -45, 45);
-			pathfinder.target = groundTarget;
+		{
+			cleanLists();
+			updateDestination(wanderTarget);
 		}
 	}
 	
@@ -106,8 +104,6 @@ public class SoldierBehavior : NPCBehavior {
 	
 	override public void handleDestroy(GameObject destroyedObject) {
 		removeNearObject(destroyedObject);
-		if (pathfinder.target == destroyedObject.transform)
-			pathfinder.target = groundTarget;
 		if (target == destroyedObject)
 			target = null;
 	}

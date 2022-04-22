@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.AI;
 
 abstract public class NPCBehavior : MonoBehaviour {
 	
@@ -8,29 +9,24 @@ abstract public class NPCBehavior : MonoBehaviour {
 	protected List<GameObject> nearCivilians;
 	protected List<GameObject> nearSoldiers;
 	
-	protected AIPath pathfinder;
-	protected Transform groundTarget; 
+	protected NavMeshAgent agent;
+	protected Vector3 destination;
+	protected Vector3 wanderTarget;
 	
-	// Use this for initialization
 	protected void Start() {
 		nearZombies = new List<GameObject>();
 		nearCivilians = new List<GameObject>();
 		nearSoldiers = new List<GameObject>();
 		
-		GameObject targets = GameObject.Find("Ground Targets");
-		groundTarget = new GameObject("Ground Target").transform;
-		groundTarget.position = generateRandomPosition(-45, 45, -45, 45);
-		groundTarget.transform.parent = targets.transform;
-		
-		pathfinder = transform.GetComponent<AIPath>();
-		pathfinder.target = groundTarget;
+		wanderTarget = generateRandomPosition(-45, 45, -45, 45);
+
+		agent = transform.GetComponent<NavMeshAgent>();
+		agent.SetDestination(wanderTarget);
 	}
 	
 	abstract public void handleDestroy(GameObject destroyedObject);
 	
-	protected void OnDestroy() {
-		if (groundTarget != null && groundTarget.gameObject != null) Destroy(groundTarget.gameObject);
-		
+	protected void OnDestroy() {		
 		foreach (GameObject zombie in nearZombies) {
 			if (zombie != null) zombie.transform.GetComponent<NPCBehavior>().handleDestroy(gameObject);
 		}
@@ -99,7 +95,7 @@ abstract public class NPCBehavior : MonoBehaviour {
 		while (!foundPosition) {
 			foundPosition = true;
 			newPosition = new Vector3(Random.Range(xMin, xMax), 0.0f, Random.Range(zMin, zMax));
-			Collider[] hitColliders = Physics.OverlapSphere(newPosition, 1.0f);
+			Collider[] hitColliders = Physics.OverlapSphere(newPosition, 5.0f);
 			for (int i = 0; i < hitColliders.Length && foundPosition; i++) {
 				if (hitColliders[i].transform.tag == "Building") foundPosition = false;
 			}
@@ -107,7 +103,22 @@ abstract public class NPCBehavior : MonoBehaviour {
 		}
 		return newPosition;
 	}
-	
+
+	protected void updateDestination(Vector3 destination)
+	{
+		agent.SetDestination(destination);
+		this.destination = destination;
+	}
+
+	protected void wanderAround()
+	{
+		if (destination == null || Vector3.Distance(transform.position, destination) < 10.0f)
+		{
+			wanderTarget = generateRandomPosition(-45, 45, -45, 45);
+			updateDestination(wanderTarget);
+		}
+	}
+
 	public void addNearObject(GameObject nearObject) {
 		if (nearObject != gameObject) {
 			switch (nearObject.tag) {
